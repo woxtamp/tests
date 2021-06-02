@@ -41,7 +41,7 @@ class TestYaDiskCreateFolder:
 
     @allure.feature('Яндекс.Диск')
     @allure.story('Попытка создания папки с уже существующим именем - ожидаем ответ с кодом 409')
-    def test_create_new_folder(self):
+    def test_create_exist_folder(self):
         folder_name = str(datetime.datetime.fromtimestamp(int(time.time()))).replace(':', '-')
         folder_replaced = folder_name.replace(' ', '+')
         with mock.patch('yadisk_create_folder.input', return_value=folder_name):
@@ -63,7 +63,7 @@ class TestYaDiskCreateFolder:
 
     @allure.feature('Яндекс.Диск')
     @allure.story('Попытка создания папки без авторизации - ожидаем ответ с кодом 401')
-    def test_create_new_folder(self):
+    def test_create_folder_unauthorized(self):
         folder_name = str(datetime.datetime.fromtimestamp(int(time.time()))).replace(':', '-')
         with mock.patch('yadisk_create_folder.input', return_value=folder_name):
             with allure.step('Проверим, что папка создалась на диске'):
@@ -72,7 +72,7 @@ class TestYaDiskCreateFolder:
 
     @allure.feature('Яндекс.Диск')
     @allure.story('Попытка создания папки без указания имени - ожидаем ответ с кодом 400')
-    def test_create_new_folder(self):
+    def test_create_folder_with_no_name(self):
         with mock.patch('yadisk_create_folder.input', return_value=''):
             with allure.step('Проверим, что папка создалась на диске'):
                 assert yadisk_create_folder.YaDiskCreateFolder(YANDEX_DISK_TOKEN).create_folder() == (
